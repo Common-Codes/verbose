@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="default.css">
+</head>
+<body>
+  <div id="master-div"></div>
+ <script>
+  window.onload = function(){
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const [source, format, size, height, width] = [fragment.get('url_src'), fragment.get('format'), fragment.get('size'), fragment.get('height'), fragment.get('width')];
+    if(!source) {
+      document.getElementById("master-div").innerHTML = `<p>Request Failed</p>`
+      console.log("`url_src` is invalid! Append `/#url_src='a url source here'` to see this thing work!")
+    } else {
+      if(size != null){
+        document.getElementById("master-div").innerHTML = `<center><img src="${source}" style="height: ${size}%; width: ${size}%;"></center>`
+      } else if(height != null){
+        document.getElementById("master-div").innerHTML = `<center><img src="${source}" style="height: ${height}px; width: ${width}px;"></center>`
+      }else{
+        document.getElementById("master-div").innerHTML = `<center><img src="${source}"></center>`
+      }
+    }
+  }
+ </script> 
+</body>
+</html>
