@@ -4,11 +4,11 @@ A lightweight Image Proxy for Crispy
 ## What's this?
 **verbose**, a lightweight Image Proxy with full `size`, `width` and `height` modifiers.
 
-completely embeddable, request-only with per-image requests, verbose resizes content to fit mobile or desktop Crispy users screen's.
+Completely embeddable, request-only with per-image requests, verbose resizes content to fit mobile or desktop Crispy users screen's.
 
-no cookies nor tracking data comes out from verbose.
+No cookies or tracking data comes out from verbose.
 
-this also removes tracking data from 3rd party images (they stop at verbose itself).
+This also removes tracking data from 3rd party images (they stop at verbose itself).
 
 ## What uses verbose?
 **verbose** is currently being used for:
@@ -16,7 +16,9 @@ this also removes tracking data from 3rd party images (they stop at verbose itse
 - [Bottom](https://bottombots.xyz)
 
 # How can I implement verbose to my project?
-for HTML apps and websites, just embed an `iframe` with verbose's url and your image request in the `url_src` parameter.
+For HTML apps and websites, just embed an `iframe` with verbose's url and your image request in the `url_src` parameter.
+
+For Applications similar methods can be used. Just use `verbose/#url_src` like the above in any way you feel. Tip: `size` keeps aspect ratio's. 
 
 a nice example to get started with is:
 - `https://verbose.crispychat.tech/#url_src=https%3A%2F%2Fhttp.cat%2F404` original full-size image from [http.cat](https://http.cat)/404

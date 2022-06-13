@@ -17,11 +17,11 @@
       console.log("`url_src` is invalid! Append `/#url_src='a url source here'` to see this thing work!")
     } else {
       if(size != null){
-        document.getElementById("master-div").innerHTML = `<center><img src="${source}" style="height: ${size}%; width: ${size}%;"></center>`
+        document.getElementById("master-div").innerHTML = `<img src="${source}" style="height: ${size}%; width: ${size}%;">`
       } else if(height != null){
-        document.getElementById("master-div").innerHTML = `<center><img src="${source}" style="height: ${height}px; width: ${width}px;"></center>`
+        document.getElementById("master-div").innerHTML = `<img src="${source}" style="height: ${height}px; width: ${width}px;">`
       }else{
-        document.getElementById("master-div").innerHTML = `<center><img src="${source}"></center>`
+        document.getElementById("master-div").innerHTML = `<img src="${source}">`
       }
     }
   }
