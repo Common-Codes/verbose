@@ -9,18 +9,22 @@
 <body>
  <script>
   window.onload = function(){
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const fragment = new URLSearchParams(window.location.search.slice(1));
     const [source, size, height, width] = [fragment.get('url_src'), fragment.get('size'), fragment.get('height'), fragment.get('width')];
     if(!source) {
+      document.title = 'Request Failed'
       document.body.innerHTML = `<p>Request Failed</p>`
       console.log("`url_src` is invalid! Append `/#url_src='a url source here'` to see this thing work!")
     } else {
       if(size != null){
         document.body.innerHTML = `<img src="${source}" style="height: ${size}%; width: ${size}%;">`
+        document.title = `${source} ̣̣̣̣— Scaled (${size}%)`
       } else if(height != null){
         document.body.innerHTML = `<img src="${source}" style="height: ${height}px; width: ${width}px;">`
+        document.title = `${source} (${height} × ${width} pixels)`
       }else{
         document.body.innerHTML = `<img src="${source}">`
+        document.title = `${source}`
       }
     }
   }
