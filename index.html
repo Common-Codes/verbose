@@ -5,29 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="default.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
+  <div id="metaresult"></div>
  <script>
+    const validIMG = (str) =>{
+      var imgregex = /^https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|bmp)$/gim;
+      if(!imgregex.test(str)){
+        return false; //false
+      } else{
+        return true; //true ^
+      }
+    }
+
   window.onload = function(){
     const fragment = new URLSearchParams(window.location.search.slice(1));
     const [source, size, height, width] = [fragment.get('url_src'), fragment.get('size'), fragment.get('height'), fragment.get('width')];
     if(!source) {
       document.title = 'Request Failed'
       document.body.innerHTML = `<p>Request Failed</p>`
-      console.log("`url_src` is invalid! Append `/#url_src='a url source here'` to see this thing work!")
     } else {
-      if(size != null){
-        document.body.innerHTML = `<img src="${source}" style="height: ${size}%; width: ${size}%;">`
-        document.title = `${source} ̣̣̣̣— Scaled (${size}%)`
-      } else if(width, height  != null){
-        document.body.innerHTML = `<img src="${source}" style="height: ${height}px; width: ${width}px;">`
-        document.title = `${source} (${height} × ${width} pixels)`
-      }else{
-        document.body.innerHTML = `<img src="${source}">`
-        document.title = `${source}`
+      if(!validIMG(source)){
+        var txt = "";
+        document.getElementById("metaresult").innerHTML = txt;
+        $.ajax({
+          url: `${source}`,
+          cache: false,
+          error: function() {
+            document.innerHTML = `<p>Unable to retrieve webpage source</p>`;
+          },
+          success: function(response) {
+            response = $.parseHTML(response);
+            $.each(response, function(i, el){
+              if(el.nodeName.toString().toLowerCase() == 'meta' && $(el).attr("name") != null && typeof $(el).attr("name") != "undefined"){
+                txt += $(el).attr("name") +"="+ ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")) +"<br>";
+                  console.log($(el).attr("name") ,"=", ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")), el);
+              }
+            });
+          },
+          complete: function() {
+            document.getElementById("metaresult").innerHTML = txt;
+          }
+        })
+      } else {
+        if(size != null){
+          document.body.innerHTML = `<img src="${source}" style="height: ${size}%; width: ${size}%;">`
+          document.title = `${source} ̣̣̣̣— Scaled (${size}%)`
+        } else if(width, height  != null){
+          document.body.innerHTML = `<img src="${source}" style="height: ${height}px; width: ${width}px;">`
+          document.title = `${source} (${height} × ${width} pixels)`
+        }else{
+          document.body.innerHTML = `<img src="${source}">`
+          document.title = `${source}`
+        }
       }
     }
   }
- </script> 
+ </script>
 </body>
 </html>
