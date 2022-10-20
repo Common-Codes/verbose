@@ -24,7 +24,7 @@
     const [source, size, height, width] = [fragment.get('url_src'), fragment.get('size'), fragment.get('height'), fragment.get('width')];
     if(!source) {
       document.title = 'Request Failed'
-      document.body.innerHTML = `<p>Request Failed</p>`
+      document.body.innerHTML = `<error>Request Failed</error>`
     } else {
       if(!validIMG(source)){
         var txt = "";
@@ -32,15 +32,17 @@
         $.ajax({
           url: `${source}`,
           cache: false,
+          type: 'GET',
+          crossDomain: true,
           error: function() {
-            document.innerHTML = `<p>Unable to retrieve webpage source</p>`;
+            txt = `<error>Request to ${source} failed</error>`;
           },
           success: function(response) {
             response = $.parseHTML(response);
             $.each(response, function(i, el){
-              if(el.nodeName.toString().toLowerCase() == 'meta' && $(el).attr("name") != null && typeof $(el).attr("name") != "undefined"){
-                txt += $(el).attr("name") +"="+ ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")) +"<br>";
-                  console.log($(el).attr("name") ,"=", ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")), el);
+              if(el.nodeName.toString().toLowerCase() == 'meta' && $(el).attr("property") != null && typeof $(el).attr("property") != "undefined"){
+                txt += `<p id="` + $(el).attr("property") +`">` + ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")) +"</p>";
+                  console.log($(el).attr("property") ,"=", ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")), el);
               }
             });
           },
@@ -48,6 +50,7 @@
             document.getElementById("metaresult").innerHTML = txt;
           }
         })
+        //TO-DO: Make this prettier
       } else {
         if(size != null){
           document.body.innerHTML = `<img src="${source}" style="height: ${size}%; width: ${size}%;">`
