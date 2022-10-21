@@ -8,7 +8,7 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
-  <div id="metaresult"></div>
+  <div id="metaresult" style="border: 1px solid black;"></div>
  <script>
     const validIMG = (str) =>{
       var imgregex = /^https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|bmp)$/gim;
@@ -42,15 +42,37 @@
             $.each(response, function(i, el){
               if(el.nodeName.toString().toLowerCase() == 'meta' && $(el).attr("property") != null && typeof $(el).attr("property") != "undefined"){
                 txt += `<p id="` + $(el).attr("property") +`">` + ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")) +"</p>";
-                  console.log($(el).attr("property") ,"=", ($(el).attr("content")?$(el).attr("content"):($(el).attr("value")?$(el).attr("value"):"")), el);
               }
             });
           },
           complete: function() {
             document.getElementById("metaresult").innerHTML = txt;
+            sam();
+            imgin();
           }
         })
         //TO-DO: Make this prettier
+        //delete og:locale property
+        function sam(){
+          if(!document.getElementById("og:locale")){
+            return
+          } else{
+            var c = document.getElementById("og:locale")
+            c.parentNode.removeChild(c);
+          }
+        }
+        //convert og:image property to visible image
+        function imgin(){
+          if(!document.getElementById("og:image")){
+            return
+          } else{
+            var a = document.getElementById("og:image")
+            var b = document.createElement('img')
+            b.src = a.innerHTML
+            a.parentNode.replaceChild(b, a);
+            b.style.width = '6%'
+          }
+        }
       } else {
         if(size != null){
           document.body.innerHTML = `<img src="${source}" style="height: ${size}%; width: ${size}%;">`
